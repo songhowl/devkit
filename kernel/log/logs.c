@@ -88,6 +88,19 @@ asmlinkage void __div0(void)
  
 
 
+/******************************************************************************
+ *
+ *print device path
+ *
+ ******************************************************************************/
+void print_devicepath(void)
+{
+path = kobject_get_path(&dev->dev.kobj, GFP_KERNEL);  
+printk(KERN_INFO "input: %s as %s\n",  
+dev->name ? dev->name : "Unspecified device", path ? path:"N/A");  
+kfree(path); 
+
+}
 void main()
 {
 }
