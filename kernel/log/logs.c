@@ -38,20 +38,54 @@ void print_time(void)
  ******************************************************************************/
 void print_name(void)
 {
-//	• 设备名：
+	//	• 设备名：
 	dev_name(dev)
-	
-//	• 总线名:
-	bus->name
-	
-//	• 驱动名：
-	drv->name
-	
-//	• 当前cpuid
-	current_thread_info()->cpu
+
+		//	• 总线名:
+		bus->name
+
+		//	• 驱动名：
+		drv->name
+
+		//	• 当前cpuid
+		current_thread_info()->cpu
 }
 
 
+
+/******************************************************************************
+ *
+ *执行dump_stack就可打印stack信息.
+ *
+ ******************************************************************************/
+asmlinkage void __div0(void)
+{
+	printk("Division by zero in kernel.\n");
+	dump_stack(); // dump current task stack
+}
+
+
+/******************************************************************************
+ *print_string代替printk朝当前终端打消息
+ *"/n" = "/012"  n 是特殊转义字符，代表"Next Line" 或Line Feed 。 /012是8进制数字表示方式
+ *012 = 0x0A = 10 
+ * /015 = 0x0D = 13 是回车 Carrige Return 的意思，对应的特殊转义字符是 '/r'。
+ *
+ *至于"/015/012"代表"/r/n" 就是先回车、再换行。Windows是用这个组合作为换行符。而/n 是Unix用来表示的换行。
+ *
+ *换行好理解，回车的意思实际上是指把当前坐标转到行首。是用来控制打印机针头的。。。 
+ ******************************************************************************/
+ static void print_string(char *str)
+{
+	        struct tty_struct *my_tty;
+	        my_tty = current->signal->tty;
+	        if (my_tty != NULL) {
+		                ((my_tty->driver->ops)->write) (my_tty,str, strlen(str));
+		                ((my_tty->driver->ops)->write) (my_tty,"/015/012", 2);
+		        }
+}
+ 
+ 
 
 
 void main()
