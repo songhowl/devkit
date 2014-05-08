@@ -101,6 +101,28 @@ dev->name ? dev->name : "Unspecified device", path ? path:"N/A");  
 kfree(path); 
 
 }
+
+
+
+/******************************************************************************
+ *
+ *获得当前的CPUID
+ *There was a comment in current.h saying
+ *that current_thread was obsolete, so this patch turns all instances of
+ *current_thread into current_thread_info()
+ *
+ ******************************************************************************/
+void print_current_cpu_id(void)
+{
+	current_thread_info()->cpu
+}
+
+static inline struct thread_info *current_thread_info(void)
+{
+        register unsigned long sp asm ("sp");
+        return (struct thread_info *)(sp & ~(THREAD_SIZE - 1));
+}
+
 void main()
 {
 }
