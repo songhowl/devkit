@@ -1,0 +1,19 @@
+set path="C:\Users\Zhang Yong\Downloads\nVidia_driver\nvflash";%path%
+rem Fairfax flash commands
+rem fuse device
+rem nvflash --writefuse fuse_public_key_hash.txt --bl bootloader.bin --go
+
+
+rem Download unfuse image:
+rem nvflash --bct flash_tegratab_p1640.bct --setbct --odmdata 0x4069C000 --odm limitedpowermode --configfile flash.cfg --create --bl bootloader.bin --reset normal 0
+
+rem Download fused image:
+nvflash --blob blob.bin --bct flash_signed.bct --setbct --odmdata 0x4069C000 --odm limitedpowermode --configfile flash_signed.cfg --create --bl bootloader_signed.bin --reset normal 0
+
+rem Bodhi flash commands
+rem download unfuse image
+nvflash --wait --bct flash.bct --setbct --odmdata 0x8049E018 --configfile flash.cfg --create --bl bootloader.bin --go
+rem download fuse image
+nvflash --wait --blob blob.bin --bct flash_signed.bct --setbct --odmdata 0x8049E018 --configfile flash_signed.cfg --create --bl bootloader_signed.bin --go
+
+
