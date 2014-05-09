@@ -123,6 +123,24 @@ static inline struct thread_info *current_thread_info(void)
         return (struct thread_info *)(sp & ~(THREAD_SIZE - 1));
 }
 
+
+/******************************************************************************
+ *
+ *get time
+ ******************************************************************************/
+static void pm_suspend_marker(char *annotation)
+{
+        struct timespec ts;
+        struct rtc_time tm;
+
+        getnstimeofday(&ts);
+        rtc_time_to_tm(ts.tv_sec, &tm);
+        pr_info("PM: suspend %s %d-%02d-%02d %02d:%02d:%02d.%09lu UTC\n",
+                annotation, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+                tm.tm_hour, tm.tm_min, tm.tm_sec, ts.tv_nsec);
+
+}
+
 void main()
 {
 }
