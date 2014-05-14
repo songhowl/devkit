@@ -1,0 +1,19 @@
+A device tree blob (.dtb) file is compiled from multiple device tree source 
+(.dts and .dtsi) files. We can decompile it into one "combined" dts file to
+ reflect the actual status read by Linux kernel.
+Install device tree compiler tool
+On Ubuntu, device tree compiler tool can be installed with following command:
+
+$sudo apt-get install device-tree-compiler
+
+After installation, you should find the tool at /usr/bin/dtc
+Decompile a .dtb file
+Use following command to decompile:
+$dtc -I dtb /path/to/your/dtb/file -O dts -o /path/to/decompiled/dts/file
+For example, you can use following command to decompile the malamute/dane dtb
+ file:
+
+$dtc -I dtb out/target/product/msm8974/obj/KERNEL_OBJ/arch/arm/boot/msm8974pro-ab-pm8941-marsala.dtb -O dts -o marsala_decompiled.dts
+
+
+For more details on usage of dtc, please refer to output of "man dtc"
