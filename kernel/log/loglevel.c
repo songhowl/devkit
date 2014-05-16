@@ -7,3 +7,7 @@
 #defineKERN_INFO"<6>"
 #defineKERN_DEBUG"<7>"
 
+
+
+
+echo 8>/proc/sys/kernel/printk
